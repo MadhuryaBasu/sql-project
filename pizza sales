@@ -1,0 +1,69 @@
+- Retrieve the total number of orders placed.
+
+select count(order_id) as total_orders from orders;
+
+-- Calculate the total revenue generated from pizza sales.
+
+SELECT 
+
+    SUM(order_details.quantity * pizzas.price) AS total_sales
+
+FROM
+
+    order_details
+    
+        JOIN
+    
+    pizzas ON order_details.pizza_id = pizzas.pizza_id
+
+-- Identify the most common pizza size ordered
+
+SELECT 
+
+    pizzas.size,
+    
+    COUNT(order_details.order_details_id) AS order_count
+
+FROM
+
+    pizzas
+    
+        JOIN
+   
+    order_details ON pizzas.pizza_id = order_details.pizza_id
+
+GROUP BY pizzas.size
+
+ORDER BY order_count DESC;
+
+
+
+-- Identify the highest-priced pizza.
+
+SELECT pizza_types.name, pizzas.price
+
+FROM pizza_types
+
+JOIN pizzas
+
+ON pizza_types.pizza_type_id = pizzas.pizza_type_id
+
+ORDER BY pizzas.price DESC limit 1;
+
+
+-- Group the orders by date and calculate the average number of pizzas ordered per day.
+
+
+select
+
+round(avg(quantity),0)
+
+from
+
+(select orders.orders_date,sum(order_details.quantity)as quantity
+
+from orders join order_details
+
+on order_details.order_id = orders.order_id
+
+group by orders.orde_date) as order_quantity;
